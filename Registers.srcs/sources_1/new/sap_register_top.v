@@ -26,28 +26,50 @@ input [3:0] btn,
 input [3:0] sw,
 output [3:0] led
     );
-endmodule
+
+// REG/ Wire Declarations
 
 wire one_shot_clock;
 wire reset;
 wire latch;
 wire enable;
+wire button;
 
-assign one_shot_clock = btn[0];
+wire [7:0] w_bus;
+reg [7:0] w_drive_r;
+ 
+assign clk = sys_clk;
+assign button = btn[0]; //Clock pulse signal
 assign reset = btn[1];
 assign latch = btn[2];
 assign enable = btn[3];
 
+// Structural Coding
+clock_pulser clock_pulser_inst0(
+     .clk(clk),
+     .button(button),
+     .one_clock_pulse(one_clock_pulse)
+ );
+
 sap_register sap_register_inst0(
     .clk(one_shot_clock),
     .reset(reset),
-    .DATA(),
+    .DATA(w_bus),
     .REG_OUT(),
     .latch(latch),
     .enable(enable)
     );
-one_shot one_shot_inst0(
-    .clk(),
-    .button(),
-    .pulse()
-    );
+    
+always @(posedge one_shot_clock) begin
+    if (reset) begin
+        w_drive_r <= 8'h42; //If the reset is high, we clear the contents of the register
+    end else begin
+        if(latch) begin
+            w_drive_r <= w_drive_r + 1; //If no reset, begin filling register with data
+        end 
+   end
+end  
+
+assign w_bus = (latch) ? w_drive_r : 8'bZZZZZZZZ; //when latch signal is asserted w_bus == w_drive_r if not high impedance
+
+endmodule
