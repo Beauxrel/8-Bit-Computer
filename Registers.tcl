@@ -122,45 +122,6 @@ create_project ${_xil_proj_name_} $origin_dir/vivado_project -part xc7z010clg400
 # Set the directory path for the new project
 set proj_dir [get_property directory [current_project]]
 
-# Set project properties
-set obj [current_project]
-set_property -name "default_lib" -value "xil_defaultlib" -objects $obj
-set_property -name "enable_resource_estimation" -value "0" -objects $obj
-set_property -name "enable_vhdl_2008" -value "1" -objects $obj
-set_property -name "ip_cache_permissions" -value "read write" -objects $obj
-set_property -name "ip_output_repo" -value "$proj_dir/${_xil_proj_name_}.cache/ip" -objects $obj
-set_property -name "mem.enable_memory_map_generation" -value "1" -objects $obj
-set_property -name "part" -value "xc7z010clg400-1" -objects $obj
-set_property -name "revised_directory_structure" -value "1" -objects $obj
-set_property -name "sim.central_dir" -value "$proj_dir/${_xil_proj_name_}.ip_user_files" -objects $obj
-set_property -name "sim.ip.auto_export_scripts" -value "1" -objects $obj
-set_property -name "simulator.activehdl_gcc_version" -value "9.3.0" -objects $obj
-set_property -name "simulator.activehdl_version" -value "13.0" -objects $obj
-set_property -name "simulator.ies_gcc_version" -value "6.2.0" -objects $obj
-set_property -name "simulator.ies_version" -value "15.20.083" -objects $obj
-set_property -name "simulator.modelsim_gcc_version" -value "7.4.0" -objects $obj
-set_property -name "simulator.modelsim_version" -value "2022.2" -objects $obj
-set_property -name "simulator.questa_gcc_version" -value "7.4.0" -objects $obj
-set_property -name "simulator.questa_version" -value "2022.2" -objects $obj
-set_property -name "simulator.riviera_gcc_version" -value "9.3.0" -objects $obj
-set_property -name "simulator.riviera_version" -value "2022.04" -objects $obj
-set_property -name "simulator.vcs_gcc_version" -value "9.2.0" -objects $obj
-set_property -name "simulator.vcs_version" -value "S-2021.09" -objects $obj
-set_property -name "simulator.xcelium_gcc_version" -value "9.3.0" -objects $obj
-set_property -name "simulator.xcelium_version" -value "21.09.002" -objects $obj
-set_property -name "simulator.xsim_gcc_version" -value "6.2.0" -objects $obj
-set_property -name "simulator.xsim_version" -value "2022.2" -objects $obj
-set_property -name "simulator_language" -value "Mixed" -objects $obj
-set_property -name "sim_compile_state" -value "1" -objects $obj
-set_property -name "webtalk.activehdl_export_sim" -value "5" -objects $obj
-set_property -name "webtalk.modelsim_export_sim" -value "5" -objects $obj
-set_property -name "webtalk.questa_export_sim" -value "5" -objects $obj
-set_property -name "webtalk.riviera_export_sim" -value "5" -objects $obj
-set_property -name "webtalk.vcs_export_sim" -value "5" -objects $obj
-set_property -name "webtalk.xcelium_export_sim" -value "4" -objects $obj
-set_property -name "webtalk.xsim_export_sim" -value "5" -objects $obj
-set_property -name "xpm_libraries" -value "XPM_CDC" -objects $obj
-
 # Create 'sources_1' fileset (if not found)
 if {[string equal [get_filesets -quiet sources_1] ""]} {
   create_fileset -srcset sources_1
@@ -194,12 +155,12 @@ set_property -name "top" -value "sap_register_top" -objects $obj
 # Set 'sources_1' fileset object
 set obj [get_filesets sources_1]
 set files [list \
- [file normalize "${origin_dir}/vivado_project/Registers.srcs/sources_1/ip/clk_wiz_0/clk_wiz_0.xci"] \
+ [file normalize "${origin_dir}/ip/clk_wiz_0.xci"] \
 ]
 add_files -norecurse -fileset $obj $files
 
 # Set 'sources_1' fileset file properties for remote files
-set file "$origin_dir/vivado_project/Registers.srcs/sources_1/ip/clk_wiz_0/clk_wiz_0.xci"
+set file "$origin_dir/ip/clk_wiz_0.xci"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets sources_1] [list "*$file"]]
 set_property -name "generate_files_for_reference" -value "0" -objects $file_obj
@@ -221,9 +182,9 @@ if {[string equal [get_filesets -quiet constrs_1] ""]} {
 set obj [get_filesets constrs_1]
 
 # Add/Import constrs file and set constrs file properties
-set file "[file normalize ${origin_dir}/vivado_project/Registers.srcs/constrs_1/imports/constraints/zybo.xdc]"
+set file "[file normalize ${origin_dir}/constraints/zybo.xdc]"
 set file_added [add_files -norecurse -fileset $obj [list $file]]
-set file "$origin_dir/vivado_project/Registers.srcs/constrs_1/imports/constraints/zybo.xdc"
+set file "$origin_dir/constraints/zybo.xdc"
 set file [file normalize $file]
 set file_obj [get_files -of_objects [get_filesets constrs_1] [list "*$file"]]
 set_property -name "file_type" -value "XDC" -objects $file_obj
